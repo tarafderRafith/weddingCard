@@ -442,38 +442,75 @@ useEffect(() => {
 
         /* Opening cover and two-sided curtains */
 
-        .invitation-cover {
-          position: fixed;
-          z-index: 1000;
-          inset: 0;
-          display: grid;
-          overflow: hidden;
-          place-items: center;
-          background: var(--wine-dark);
-          isolation: isolate;
-        }
+       .invitation-cover {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  isolation: isolate;
+  background: #350d19;
+}
+  .invitation-cover .cover-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(119, 48, 65, 0.35),
+      transparent 65%
+    ),
+    #350d19;
+  pointer-events: none;
+}
+  .invitation-cover .cover-frame {
+  position: absolute;
+  inset: 18px;
+  z-index: 2;
+  border: 1px solid rgba(220, 185, 112, 0.65);
+  pointer-events: none;
+}
           .invitation-cover .curtain {
   position: absolute;
   top: 0;
   bottom: 0;
   width: 50%;
+  min-width: 50%;
   height: 100%;
-  z-index: 5;
+  z-index: 4;
   display: block;
-  opacity: 1;
   visibility: visible;
+  opacity: 1;
   pointer-events: none;
-  background:
+  background-color: #501626;
+  background-image:
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.28) 0%,
+      transparent 12%,
+      rgba(255, 220, 220, 0.08) 24%,
+      rgba(0, 0, 0, 0.12) 38%,
+      rgba(255, 220, 220, 0.06) 52%,
+      rgba(0, 0, 0, 0.2) 70%,
+      transparent 86%,
+      rgba(0, 0, 0, 0.22) 100%
+    ),
     repeating-linear-gradient(
       90deg,
       #350d19 0px,
       #682336 12px,
       #501626 25px,
       #3b101c 38px,
-      #70283a 48px
+      #70283a 48px,
+      #491320 60px
     );
-  box-shadow: inset 0 0 45px rgba(0, 0, 0, 0.3);
-  transition: transform 1.7s cubic-bezier(0.76, 0, 0.24, 1);
+  box-shadow:
+    inset 0 0 45px rgba(0, 0, 0, 0.3),
+    0 0 18px rgba(0, 0, 0, 0.12);
+  transition:
+    transform 1.7s cubic-bezier(0.76, 0, 0.24, 1);
   will-change: transform;
 }
 
@@ -543,6 +580,59 @@ useEffect(() => {
           font-size: 17px;
           line-height: 1;
         }
+          .invitation-cover .curtain-left {
+  left: 0;
+  right: auto;
+  transform: translateX(0);
+  border-right: 1px solid rgba(234, 215, 168, 0.45);
+  transform-origin: left center;
+}
+
+/* Right curtain covers the right half */
+.invitation-cover .curtain-right {
+  right: 0;
+  left: auto;
+  transform: translateX(0);
+  border-left: 1px solid rgba(234, 215, 168, 0.45);
+  transform-origin: right center;
+}
+.invitation-cover .curtain::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(220, 185, 112, 0.6) 20%,
+    rgba(220, 185, 112, 0.18) 50%,
+    rgba(220, 185, 112, 0.6) 80%,
+    transparent
+  );
+  pointer-events: none;
+}
+  .invitation-cover .curtain-left::after {
+  right: 0;
+}
+
+.invitation-cover .curtain-right::after {
+  left: 0;
+}
+  .invitation-cover .cover-card {
+  position: relative;
+  z-index: 8;
+  pointer-events: auto;
+}
+  .invitation-cover .cover-open-button {
+  position: relative;
+  z-index: 9;
+  pointer-events: auto;
+  cursor: pointer;
+}
+  .invitation-cover .cover-open-button:disabled {
+  cursor: default;
+}
 
         .cover-card h1 {
           max-width: 100%;
@@ -1453,16 +1543,19 @@ useEffect(() => {
 
           .desktop-nav {
             position: absolute;
-            top: 100%;
-            right: 0;
-            left: 0;
-            display: none;
-            align-items: stretch;
-            flex-direction: column;
-            gap: 0;
-            padding: 8px 22px 20px;
-            border-bottom: 1px solid rgba(200, 166, 106, .35);
-            background: var(--cream);
+  top: 100%;
+  right: 0;
+  left: 0;
+  display: none;
+  align-items: stretch;
+  flex-direction: column;
+  gap: 0;
+  max-height: calc(100dvh - 72px);
+  overflow-y: auto;
+  padding: 8px 22px 20px;
+  border-bottom: 1px solid rgba(200, 166, 106, .35);
+  background: var(--cream);
+  box-shadow: 0 12px 24px rgba(44, 11, 22, .12);
           }
 
           .desktop-nav.menu-open {
@@ -1476,11 +1569,12 @@ useEffect(() => {
             text-align: left;
           }
 
-          .menu-toggle {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-          }
+         
+.menu-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
 
           .header-actions .share-button {
             display: none;
@@ -1643,6 +1737,9 @@ useEffect(() => {
         }
 
         @media (prefers-reduced-motion: reduce) {
+        .invitation-cover .curtain {
+    transition-duration: 0.3s;
+  }
           *,
           *::before,
           *::after {
@@ -1655,45 +1752,50 @@ useEffect(() => {
       `}</style>
 
       {coverVisible && (
-        <div
-          className={`invitation-cover ${invitationOpened ? 'opened' : ''}`}
-          aria-label="Wedding invitation opening"
-        >
-          <div className="cover-background" />
+  <div
+    className={`invitation-cover ${invitationOpened ? "opened" : ""}`}
+    aria-label="Wedding invitation opening"
+  >
+    <div className="cover-background" aria-hidden="true" />
+    <div className="cover-frame" aria-hidden="true" />
 
-          <div className="cover-frame" />
+    {/* Left and right burgundy curtains */}
+    <div className="curtain curtain-left" aria-hidden="true" />
+    <div className="curtain curtain-right" aria-hidden="true" />
 
-          <div className="cover-card">
-            <div className="cover-monogram">R <span>&amp;</span> N</div>
+    {/* Invitation card stays above the curtains */}
+    <div className="cover-card">
+      <div className="cover-monogram">
+        R <span>&amp;</span> N
+      </div>
 
-            <div className="eyebrow">Together with our families</div>
+      <div className="eyebrow">Together with our families</div>
 
-            <h1>Rafith &amp; Nishat</h1>
+      <h1>Rafith &amp; Nishat</h1>
 
-            <div className="ornament">✦</div>
+      <div className="ornament">✦</div>
 
-            <p>Request the pleasure of your company as we begin our forever</p>
+      <p>
+        Request the pleasure of your company as we begin our forever
+      </p>
 
-            <div className="cover-date">15 · 03 · 2027</div>
+      <div className="cover-date">15 · 03 · 2027</div>
 
-            <span className="eyebrow">With love and gratitude</span>
+      <span className="eyebrow">With love and gratitude</span>
 
-            <button
-              className="cover-open-button"
-              type="button"
-              onClick={openInvitation}
-              disabled={invitationOpened}
-            >
-              <span aria-hidden="true">✦</span>
-              Open Invitation
-              <span aria-hidden="true">✦</span>
-            </button>
-          </div>
-
-          <div className="curtain curtain-left" aria-hidden="true" />
-          <div className="curtain curtain-right" aria-hidden="true" />
-        </div>
-      )}
+      <button
+        className="cover-open-button"
+        type="button"
+        onClick={openInvitation}
+        disabled={invitationOpened}
+      >
+        <span aria-hidden="true">✦</span>
+        Open Invitation
+        <span aria-hidden="true">✦</span>
+      </button>
+    </div>
+  </div>
+)}
 
       <div className="site-shell">
         <header className="site-header">
@@ -1712,20 +1814,7 @@ useEffect(() => {
               </span>
             </button>
 
-            <nav
-              className={`desktop-nav ${menuOpen ? 'menu-open' : ''}`}
-              aria-label="Main navigation"
-            >
-              {navItems.map((item) => (
-                <button
-                  key={item.id}
-                  type="button"
-                  onClick={() => scrollToSection(item.id)}
-                >
-                  {item.label}
-                </button>
-              ))}
-            </nav>
+            ?
 
             <div className="header-actions">
               <button
