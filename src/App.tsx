@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { supabase, supabaseConfigured } from './lib/supabase';
 
+import weddingPhoto from './assets/94FB7AFC-A469-4E0C-A302-88D6363B9C9E.png';
 type Wish = {
   id: number;
   name: string;
@@ -1839,7 +1840,16 @@ useEffect(() => {
         </header>
 
         <main>
-          <section className="hero" id="home">
+          <section
+  className="hero"
+  id="home"
+  style={{
+    backgroundImage: `linear-gradient(rgba(44, 11, 22, 0.40), rgba(44, 11, 22, 0.55)), url("${weddingPhoto}")`,
+    backgroundPosition: 'center',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+  }}
+>
             <div className="hero-content">
               <div className="eyebrow">Two hearts, one beautiful journey</div>
 
@@ -2040,6 +2050,15 @@ useEffect(() => {
                       <strong>Date &amp; Time</strong>
                       <span>March 15, 2027</span>
                       <span>12:00 PM Bangladesh Time</span>
+                    </div>
+                  </div>
+
+                  <div className="location-detail">
+                    <span className="location-detail-icon">◷</span>
+                    <div>
+                      <strong>Contact No</strong>
+                      <span>+880 1788-151272</span>
+                      <span>For any kind of guidance regarding the Wedding or the destinations kindly contact to this number</span>
                     </div>
                   </div>
 
